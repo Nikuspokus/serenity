@@ -36,13 +36,28 @@
         </div>
         
         <!-- Bottom Controls -->
-        <div class="flex-none bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-14 flex flex-col items-center justify-center gap-8">
-          <p class="text-white/90 text-xs sm:text-sm font-black uppercase tracking-widest text-center px-10 animate-pulse">
-            Positionnez l'ordonnance dans le cadre
-          </p>
-          <button @click="takePhoto" class="w-20 h-20 rounded-full border-[5px] border-white flex items-center justify-center p-1 group active:scale-95 transition-all shadow-[0_0_30px_rgba(255,255,255,0.3)]">
-             <div class="w-full h-full bg-white rounded-full transition-all group-active:scale-90 opacity-90"></div>
-          </button>
+        <div class="flex-none bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-14 flex flex-col items-center justify-center gap-8 min-h-[200px]">
+          <template v-if="!isScanning">
+            <p class="text-white/90 text-xs sm:text-sm font-black uppercase tracking-widest text-center px-10 animate-pulse">
+              Positionnez l'ordonnance dans le cadre
+            </p>
+            <button @click="takePhoto" class="w-20 h-20 rounded-full border-[5px] border-white flex items-center justify-center p-1 group active:scale-95 transition-all shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+               <div class="w-full h-full bg-white rounded-full transition-all group-active:scale-90 opacity-90"></div>
+            </button>
+          </template>
+          <template v-else>
+             <div class="flex flex-col items-center gap-6 animate-in zoom-in duration-300">
+               <div class="relative w-16 h-16">
+                 <div class="absolute inset-0 border-4 border-white/20 rounded-full"></div>
+                 <div class="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin"></div>
+                 <span class="material-symbols-outlined absolute inset-0 flex items-center justify-center text-primary text-xl animate-pulse">auto_awesome</span>
+               </div>
+               <p class="text-white font-bold tracking-widest uppercase text-sm animate-pulse flex flex-col items-center gap-1">
+                 <span>Analyse I.A. en cours</span>
+                 <span class="text-[10px] text-white/50 lowercase tracking-normal font-normal">Extraction des données médicales...</span>
+               </p>
+             </div>
+          </template>
         </div>
       </div>
     </div>
@@ -164,6 +179,7 @@ const router = useRouter()
 // UI State
 const step = ref('scan')
 const flashOn = ref(false)
+const isScanning = ref(false)
 
 // Logic State
 const videoElement = ref(null)
@@ -232,19 +248,54 @@ const toggleFlash = async () => {
   }
 }
 
-const takePhoto = () => {
-  // Optionnel : on pourrait capturer une vraie frame de la vidéo ici pour l'envoyer à l'OCR
-  stopCamera()
+const takePhoto = async () => {
+  if (!videoElement.value || !stream) return
   
-  // Simulation temps d'analyse OCR
-  setTimeout(() => {
-    form.name = 'Levothyrox 75µg'
-    form.frequency = '1 fois/j (Matin)'
-    form.startDate = new Date().toISOString().split('T')[0]
-    form.endDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-    form.confirmed = false // reset for safety
+  // 1. Convert video frame to base64 canvas image
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  canvas.width = videoElement.value.videoWidth
+  canvas.height = videoElement.value.videoHeight
+  ctx.drawImage(videoElement.value, 0, 0, canvas.width, canvas.height)
+  
+  // Compress slightly to save bandwidth (0.8 quality JPEG)
+  const base64Image = canvas.toDataURL('image/jpeg', 0.8)
+  
+  // Stop camera feed and show loading state
+  stopCamera()
+  isScanning.value = true
+  
+  try {
+    // 2. Send to Supabase Edge Function processing Gemini API
+    const { data, error } = await supabase.functions.invoke('analyze-prescription', {
+      body: { imageBase64: base64Image }
+    })
+
+    if (error) {
+      console.error("Function error details:", error)
+      throw new Error(error.message || "Erreur inconnue de la fonction")
+    }
+    
+    // 3. Populate form with AI results
+    if (data) {
+      form.name = data.name || ''
+      form.frequency = data.frequency || ''
+      form.startDate = data.startDate || new Date().toISOString().split('T')[0]
+      form.endDate = data.endDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    }
+    
+    // Proceed to verify step
+    form.confirmed = false 
     step.value = 'verify'
-  }, 1000)
+    
+  } catch (err) {
+    console.error("OCR IA Erreur:", err)
+    alert("Désolé, l'I.A. n'a pas réussi à analyser l'ordonnance. L'image était peut-être trop floue ou la connexion a échoué.")
+    // fallback simulation or return to scan
+    retakeScan()
+  } finally {
+    isScanning.value = false
+  }
 }
 
 const retakeScan = () => {
