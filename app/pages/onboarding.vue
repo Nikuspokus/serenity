@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-background text-on-background min-h-screen flex flex-col selection:bg-primary-fixed overflow-x-hidden font-body">
+  <div class="bg-background text-on-background h-[100dvh] flex flex-col selection:bg-primary-fixed overflow-hidden font-body relative">
     <!-- Top Navigation -->
-    <header class="fixed top-0 w-full z-50 bg-[#f6fafd]/70 backdrop-blur-xl border-b border-outline-variant/10">
+    <header class="flex-none w-full z-50 bg-[#f6fafd]/70 backdrop-blur-xl border-b border-outline-variant/10">
       <div class="flex justify-between items-center px-8 py-4 w-full max-w-7xl mx-auto">
         <div class="flex items-center gap-3">
           <span class="material-symbols-outlined text-primary text-3xl font-bold">spa</span>
@@ -13,8 +13,9 @@
       </div>
     </header>
 
-    <main class="flex-grow flex flex-col pt-28 pb-12 px-6 md:px-12 max-w-6xl mx-auto w-full">
-      <!-- Step 1: Hero Section -->
+    <main class="flex-grow overflow-y-auto relative w-full">
+      <div class="flex flex-col min-h-full px-6 md:px-12 py-8 max-w-6xl mx-auto w-full">
+        <!-- Step 1: Hero Section -->
       <section v-if="currentStep === 1" class="space-y-14 animate-in">
         <div class="text-center md:text-left">
           <h1 class="font-headline text-4xl md:text-6xl font-extrabold tracking-tight text-on-background mb-5 leading-[1.1]">
@@ -134,8 +135,12 @@
         </div>
       </section>
 
-      <!-- Footer / CTA -->
-      <footer class="mt-auto flex flex-col md:flex-row items-center justify-between gap-10 pt-10 border-t border-outline-variant/15">
+      </div>
+    </main>
+
+    <!-- Footer / CTA (Fixed at bottom) -->
+    <footer class="flex-none bg-background z-50 border-t border-outline-variant/15 w-full">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10 px-6 md:px-12 py-6 max-w-6xl mx-auto w-full">
         <div class="flex items-center gap-6">
           <div class="flex gap-2">
             <div v-for="i in 4" :key="i" class="w-2.5 h-2.5 rounded-full transition-all duration-300" :class="currentStep === i ? 'bg-primary scale-125' : 'bg-outline-variant/40'"></div>
@@ -150,8 +155,8 @@
             {{ currentStep === 4 ? 'Terminer' : 'Suivant' }}
           </button>
         </div>
-      </footer>
-    </main>
+      </div>
+    </footer>
 
     <!-- Decoration Orbs -->
     <div class="fixed -bottom-32 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none -z-10 animate-pulse"></div>

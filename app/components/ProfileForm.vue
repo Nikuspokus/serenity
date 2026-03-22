@@ -1,45 +1,45 @@
 <template>
-  <div class="space-y-12">
+  <div class="space-y-8 sm:space-y-12">
     <!-- Profile Picture Edit -->
-    <section class="flex flex-col md:flex-row items-center gap-10">
-      <div class="relative group cursor-pointer bg-surface-container rounded-full w-32 h-32 overflow-hidden flex items-center justify-center">
+    <section class="flex flex-col sm:flex-row items-center gap-6 sm:gap-10">
+      <div class="relative group cursor-pointer bg-surface-container rounded-full w-24 h-24 sm:w-32 sm:h-32 overflow-hidden flex items-center justify-center">
         <img v-if="form.avatar_url" :src="form.avatar_url" class="w-full h-full object-cover border-4 border-primary-fixed shadow-md" />
-        <span v-else class="material-symbols-outlined text-primary/20 text-6xl">person</span>
+        <span v-else class="material-symbols-outlined text-primary/20 text-5xl sm:text-6xl">person</span>
         <div class="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-          <span class="material-symbols-outlined text-white text-3xl">photo_camera</span>
+          <span class="material-symbols-outlined text-white text-2xl sm:text-3xl">photo_camera</span>
         </div>
       </div>
-      <div class="text-center md:text-left space-y-2">
-        <p class="font-bold text-on-surface">Photo de profil</p>
-        <p class="text-xs text-on-surface-variant font-medium">Synchronisée avec Google.</p>
+      <div class="text-center sm:text-left space-y-1 sm:space-y-2">
+        <p class="font-bold text-on-surface text-sm sm:text-base">Photo de profil</p>
+        <p class="text-[10px] sm:text-xs text-on-surface-variant font-medium">Synchronisée avec Google.</p>
       </div>
     </section>
 
-    <div class="space-y-14">
+    <div class="space-y-10 sm:space-y-14">
       <!-- Section 1: Identité & Biométrie -->
-      <section class="space-y-6">
-        <h2 class="text-2xl md:text-3xl font-black font-headline text-primary border-b border-outline-variant/10 pb-4 flex items-center gap-3">
-          <span class="material-symbols-outlined text-3xl">fingerprint</span> Identité & Biométrie
+      <section class="space-y-4 sm:space-y-6">
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-black font-headline text-primary border-b border-outline-variant/10 pb-3 sm:pb-4 flex items-center gap-2 sm:gap-3">
+          <span class="material-symbols-outlined text-2xl sm:text-3xl">fingerprint</span> Identité & Biométrie
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <div class="space-y-2 sm:space-y-3">
             <label class="block text-[10px] md:text-xs font-black uppercase tracking-widest text-on-surface-variant/70 ml-2">Prénom et Nom *</label>
-            <input v-model="form.full_name" type="text" class="w-full px-6 py-4 rounded-3xl bg-surface-container-low border border-outline-variant/10 focus:border-primary focus:bg-white focus:outline-none transition-all font-semibold" />
+            <input v-model="form.full_name" type="text" class="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl sm:rounded-3xl bg-surface-container-low border border-outline-variant/10 focus:border-primary focus:bg-white focus:outline-none transition-all font-semibold text-sm sm:text-base" />
           </div>
-          <div class="space-y-3">
+          <div class="space-y-2 sm:space-y-3">
             <label class="block text-[10px] md:text-xs font-black uppercase tracking-widest text-on-surface-variant/70 ml-2">Email *</label>
-            <input v-model="form.email" type="email" disabled class="w-full px-6 py-4 rounded-3xl bg-surface-container-low border border-outline-variant/10 focus:border-primary focus:bg-white focus:outline-none transition-all font-semibold opacity-50 cursor-not-allowed" />
+            <input v-model="form.email" type="email" disabled class="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl sm:rounded-3xl bg-surface-container-low border border-outline-variant/10 focus:border-primary focus:bg-white focus:outline-none transition-all font-semibold opacity-50 cursor-not-allowed text-sm sm:text-base" />
           </div>
-          <div class="space-y-3">
+          <div class="space-y-2 sm:space-y-3">
             <label class="block text-[10px] md:text-xs font-black uppercase tracking-widest text-on-surface-variant/70 ml-2">Date de naissance</label>
             <div class="relative">
-              <input v-model="form.dob" type="date" class="w-full pl-12 pr-6 py-4 rounded-3xl bg-surface-container-low border border-outline-variant/10 focus:border-primary focus:bg-white focus:outline-none transition-all font-bold text-on-surface date-input-sexy" />
-              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary/70 pointer-events-none text-xl">calendar_month</span>
+              <input v-model="form.dob" type="date" class="w-full pl-10 sm:pl-12 pr-4 sm:pr-6 py-3 sm:py-4 rounded-2xl sm:rounded-3xl bg-surface-container-low border border-outline-variant/10 focus:border-primary focus:bg-white focus:outline-none transition-all font-bold text-on-surface date-input-sexy text-sm sm:text-base" />
+              <span class="material-symbols-outlined absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-primary/70 pointer-events-none text-lg sm:text-xl">calendar_month</span>
             </div>
           </div>
-          <div class="space-y-3">
+          <div class="space-y-2 sm:space-y-3">
             <label class="block text-[10px] md:text-xs font-black uppercase tracking-widest text-on-surface-variant/70 ml-2">Sexe biologique</label>
-            <select v-model="form.sex" class="w-full px-6 py-4 rounded-3xl bg-surface-container-low border border-outline-variant/10 focus:border-primary focus:bg-white focus:outline-none transition-all font-semibold appearance-none">
+            <select v-model="form.sex" class="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl sm:rounded-3xl bg-surface-container-low border border-outline-variant/10 focus:border-primary focus:bg-white focus:outline-none transition-all font-semibold appearance-none text-sm sm:text-base">
               <option value="">Sélectionner</option>
               <option value="M">Masculin</option>
               <option value="F">Féminin</option>
@@ -132,7 +132,24 @@
       </section>
     </div>
 
-    <div class="mt-12 pt-10 border-t border-outline-variant/10 flex flex-col md:flex-row gap-4 justify-end">
+    <!-- Alert Messages -->
+    <div v-if="errorMessage" class="p-6 bg-error/10 text-error rounded-[2rem] border border-error/20 flex flex-col gap-2 animate-in fade-in zoom-in duration-300">
+      <div class="flex items-center gap-3 font-black text-lg">
+        <span class="material-symbols-outlined text-2xl">error</span>
+        Informations manquantes
+      </div>
+      <p class="text-sm font-semibold opacity-90 ml-9">{{ errorMessage }}</p>
+    </div>
+
+    <div v-if="successMessage" class="p-6 bg-[#effaf6] text-secondary rounded-[2rem] border border-secondary/20 flex flex-col gap-2 animate-in fade-in zoom-in duration-300">
+      <div class="flex items-center gap-3 font-black text-lg">
+        <span class="material-symbols-outlined text-2xl">check_circle</span>
+        {{ completionPercentage === 100 ? 'Dossier complet !' : 'Dossier sauvegardé' }}
+      </div>
+      <p class="text-sm font-semibold opacity-90 ml-9">{{ successMessage }}</p>
+    </div>
+
+    <div class="mt-8 pt-10 border-t border-outline-variant/10 flex flex-col md:flex-row gap-4 justify-end">
       <button v-if="showCancel" @click="$emit('cancel')" class="px-12 py-5 rounded-full font-black text-on-surface-variant hover:bg-surface-container transition-all text-sm uppercase tracking-widest text-center">
         {{ cancelText }}
       </button>
@@ -158,6 +175,9 @@ const emit = defineEmits(['saved', 'cancel'])
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 const loading = ref(false)
+const errorMessage = ref('')
+const successMessage = ref('')
+const completionPercentage = ref(0)
 
 const form = reactive({
   full_name: '',
@@ -216,6 +236,19 @@ onMounted(async () => {
 
 const saveProfile = async () => {
   if (user.value) {
+    errorMessage.value = ''
+    successMessage.value = ''
+    
+    // Frontend Validation
+    if (!form.full_name || form.full_name.trim() === '') {
+      errorMessage.value = "Le prénom et nom sont obligatoires pour créer votre dossier médical."
+      return
+    }
+    if (form.has_allergies === true && (!form.allergies_list || form.allergies_list.trim() === '')) {
+      errorMessage.value = "Vous avez indiqué avoir des allergies. Merci de les préciser dans le champ correspondant."
+      return
+    }
+    
     loading.value = true
     
     // Check completion level
@@ -226,6 +259,11 @@ const saveProfile = async () => {
     }
     if (form.has_allergies === true || form.has_allergies === false) filled++
     const completion = Math.round((filled / (fields.length + 1)) * 100)
+    completionPercentage.value = completion
+
+    // Safe parsing for numeric values
+    const safeWeight = form.weight && form.weight !== '' ? parseFloat(form.weight) : null
+    const safeHeight = form.height && form.height !== '' ? parseFloat(form.height) : null
 
     const { error } = await supabase.from('profiles').upsert({
       id: user.value.id,
@@ -234,8 +272,8 @@ const saveProfile = async () => {
       avatar_url: form.avatar_url,
       dob: form.dob || null,
       sex: form.sex || null,
-      weight: form.weight ? parseFloat(form.weight) : null,
-      height: form.height ? parseFloat(form.height) : null,
+      weight: safeWeight,
+      height: safeHeight,
       blood_type: form.blood_type || null,
       has_allergies: form.has_allergies,
       allergies_list: form.has_allergies ? form.allergies_list : null,
@@ -249,18 +287,26 @@ const saveProfile = async () => {
       emergency_contact_1_relation: form.emergency_contact_1_relation || null,
       updated_at: new Date()
     })
+    
     loading.value = false
     
     if (error) {
-      alert("Erreur lors de l'enregistrement : " + error.message)
+      console.error('Supabase Error:', error)
+      errorMessage.value = "Une erreur technique est survenue lors de l'enregistrement de votre profil. Veuillez vérifier vos connexions."
       return
     }
     
     if (completion < 100) {
-      alert("Informations enregistrées. Attention : votre profil médical n'est pas rempli à 100%. Pensez à le compléter plus tard pour maximiser la sécurité de l'application.")
+      successMessage.value = "Informations enregistrées avec succès. Attention : votre profil n'est rempli qu'à " + completion + "%. Pensez à le compléter plus tard."
+    } else {
+      successMessage.value = "Parfait ! Votre dossier médical est parfaitement complet et sécurisé."
     }
+    
+    // Wait for the user to read the success message before closing modal
+    setTimeout(() => {
+      emit('saved')
+    }, 2500)
   }
-  emit('saved')
 }
 </script>
 

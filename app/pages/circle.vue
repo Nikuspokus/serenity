@@ -9,10 +9,10 @@
             Parce que personne ne devrait traverser cela seul. Invitez vos proches pour qu'ils puissent vous épauler concrètement, suivre vos rendez-vous, et vous aider sur les tâches du quotidien (courses, repas, garde d'animaux...).
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
-            <button class="bg-white text-primary px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-opacity-90 transition-all active:scale-95 shadow-xl text-lg">
+            <NuxtLink to="/circle-settings" class="bg-white text-primary px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-opacity-90 transition-all active:scale-95 shadow-xl text-lg">
               <span class="material-symbols-outlined">person_add</span>
               Inviter un proche
-            </button>
+            </NuxtLink>
           </div>
         </div>
         <div class="absolute -right-16 -bottom-16 opacity-10">
